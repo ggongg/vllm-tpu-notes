@@ -271,10 +271,11 @@ export default function App() {
     const compatible = chipRows.find((r) => r.fits && r.chip.gen !== "ironwood");
     if (!compatible) return null;
     const { chip, tp } = compatible;
-    return `vllm serve ${selectedModel.hf_id} \\
-  --tensor-parallel-size ${tp} \\
-  --max-model-len 4096 \\
-  --dtype ${precision === "fp8" ? "fp8" : "bfloat16"}`;
+    return `${selectedModel.hf_id} \
+  --tensor-parallel-size ${tp} \
+  --max-model-len 4096 \
+  --dtype ${precision === "fp8" ? "fp8" : "bfloat16"} \
+  --device tpu`;
   })();
 
   return (
@@ -448,7 +449,7 @@ export default function App() {
           }}>
             <span style={{ color: "#79C0FF" }}>vllm</span>{" "}
             <span style={{ color: "#FFA657" }}>serve</span>{" "}
-            {vllmCommand.split("\n").slice(0).join("\n")}
+            {vllmCommand}
           </pre>
         </div>
       )}
